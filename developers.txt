@@ -1,0 +1,98 @@
+This file provides some information for developers who want to extend this plugin.
+For more info, visit http://codesymphony.co/comic-embedder/
+
+
+== Adding Styles ==
+
+You can add your own styles to use on the comics. Simply create your CSS rules for a
+new class, and add them to your child theme's style.css file. (If you aren't using a
+child theme, see http://codex.wordpress.org/Child_Themes).
+
+For example:
+
+.chickcomic-container.my-cool-new-style-class {
+	/* Your CSS styles here */
+}
+
+Then you can add your new style to the available styles by adding a filter for the
+styles in your child theme's functions.php file.
+
+For example:
+
+<?php
+
+/**
+ * A new function for my cool styles.
+ *
+ * It needs to take one parameter; this is the array of styles.
+ *
+ * @filter chickcomic_styles_filter
+ *
+ * @param array $styles The array of styles.
+ *
+ * @return array An array of styles.
+ */
+function function_for_my_cool_styles( $styles ) {
+
+	/*
+	 * Add a new element to the array of styles.
+	 * Make sure that the [key] matches the new class you added in the CSS.
+	 * The value is the name of your style, and can be whatever you want.
+	 */
+	$styles['my-cool-new-style-class'] = 'My Cool New Style';
+
+	// If you don't return the $styles array, then no styles will work!
+	return $styles;
+}
+add_filter( 'chickcomic_styles_filter', 'function_for_my_cool_styles' );
+
+// ^^ Tell WordPress to add this function as a filter for the Chick Comic styles.
+
+?>
+
+Now you will be able to use your style in the shortcode, and even set it as the
+default on the settings page if you want. You can even preview it along with all the
+other styles on the preview page!
+
+Additional info: http://codesymphony.co/comic-embedder/#custom-styles
+
+
+== Embeding Comics without shortcode ==
+
+You can embed comics in posts and pages with the shortcode, but what if you want to
+do something else, like display a random comic in the footer of your website? You can
+do that using the display_chickcomic() function. This is the function that the
+shortcode uses to display the comics. The function takes the same three parameters as
+the shortcode, the only difference being that they must be in order:
+
+1. The id or title of a comic, or 'latest' or 'random'.
+2. What to display if the comic is unavailable: 'none', 'default', or 'random'.
+3. What style to give the comic.
+
+As with the shortcode, these are all optional, and if they aren't set the defaults
+will be used. So you could call the function like this, with no parameters:
+
+display_chickcomic();
+
+Or will all parameters:
+
+display_chickcomic( '1', 'none', 'inset-box' );
+
+If you want to leave out a parameter, but set a later parameter, then just pass null
+in place of that parameter:
+
+display_chickcomic( 'random', null, 'inset-box' );
+
+You can use this function anywhere in your PHP code. The function returns a string,
+which you will have to echo() to display the comic.
+
+For example:
+
+echo( display_chickcomic() );
+
+Additional info: http://codesymphony.co/comic-embedder/#developers
+
+
+== Aditional Help ==
+
+If you need help, or have any questions, please see http://codesymphony.co/comic-embedder/
